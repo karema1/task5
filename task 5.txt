@@ -1,0 +1,62 @@
+class Book:
+    def _init_(self, title, author, isbn):
+        self.title = title
+        self.author = author
+        self.__isbn = isbn  # متغير خاص
+        self.available = True  
+
+    def display_info(self):
+        """عرض معلومات الكتاب"""
+        print(f"العنوان: {self.title}, المؤلف: {self.author}, ISBN: {self.__isbn}, متاح: {self.available}")
+
+    def get_isbn(self):
+        """إرجاع رقم الـ ISBN"""
+        return self.__isbn
+
+    def set_isbn(self, new_isbn):
+        """تحديث رقم الـ ISBN"""
+        self.__isbn = new_isbn
+
+
+# تعريف كلاس العضو
+class Member:
+    def _init_(self, name, membership_id):
+        self.name = name
+        self.__membership_id = membership_id  # متغير خاص
+        self.borrowed_books = []  
+
+    def borrow_book(self, book):
+        """استعارة كتاب إذا كان متاحًا"""
+        if book.available:
+            self.borrowed_books.append(book)
+            book.available = False
+            print(f"{self.name} استعار الكتاب: {book.title}")
+        else:
+            print(f"عذرًا، الكتاب {book.title} غير متاح حاليًا")
+
+    def return_book(self, book):
+        """إرجاع الكتاب إلى المكتبة"""
+        if book in self.borrowed_books:
+            self.borrowed_books.remove(book)
+            book.available = True
+            print(f"{self.name} أعاد الكتاب: {book.title}")
+
+    def get_membership_id(self):
+        """إرجاع رقم العضوية"""
+        return self.__membership_id
+
+    def set_membership_id(self, new_id):
+        """تحديث رقم العضوية"""
+        self.__membership_id = new_id
+
+
+# كلاس موظف المكتبة (يرث من Member)
+class StaffMember(Member):
+    def _init_(self, name, membership_id, staff_id):
+        super()._init_(name, membership_id)
+        self.staff_id = staff_id  # رقم الموظف
+
+    def add_book(self, book_list, book):
+        """إضافة كتاب جديد إلى المكتبة"""
+        book_list.append(book)
+        print(f"{self.name} أضاف الكتاب {book.title} إلى المكتبة")
